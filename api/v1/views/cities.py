@@ -50,9 +50,9 @@ def post_cities(state_id):
     if not state:
         abort(404)
     if not request.get_json():
-        abort(404, description="Not a JSON")
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
     if "name" not in request.get_json():
-        abort(404, description="Missing name")
+        return make_response(jsonify({'error': 'Missing name'}), 400)
     data = request.get_json()
     instance = City(**data)
     instance.state_id = state_id
@@ -67,7 +67,7 @@ def put_cities(city_id):
     if not city:
         abort(404)
     if not request.get_json():
-        abort(404, description="Not a JSON")
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
     key_ignore = ['id', 'state_id', 'created_at', 'updated_at']
     data = request.get_json()
     for key, value in data.items():

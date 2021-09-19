@@ -44,9 +44,9 @@ def delete_amenities(amenity_id):
 def post_amenities():
     """ Create an amenities and return ir with status code 201 """
     if not request.get_json():
-        abort(404, description="Not a JSON")
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
     if "name" not in request.get_json():
-        abort(404, description="Missing name")
+        return make_response(jsonify({'error': 'Missing name'}), 400)
     data = request.get_json()
     instance = Amenity(**data)
     instance.save()
@@ -58,7 +58,7 @@ def post_amenities():
 def put_amenities(amenity_id):
     """ updates an amenity object """
     if not request.get_json():
-        abort(404, description="Not a JSON")
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
     key_ignore = ['id', 'created_at', 'updated_at']
     amenity = storage.get(Amenity, amenity_id)
     if not amenity:
